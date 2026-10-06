@@ -11,6 +11,14 @@ await connectDB();
 app.use(express.json());
 
 
+
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Router to found"
+    });
+})
+
 app.use(appMiddleware);
 
 app.listen(env.port, () => {
