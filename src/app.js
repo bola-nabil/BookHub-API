@@ -8,6 +8,8 @@ const app = express();
 
 await connectDB();
 
+app.use(express.json());
+
 
 app.use(appMiddleware);
 
