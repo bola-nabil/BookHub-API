@@ -10,8 +10,6 @@ await connectDB();
 
 app.use(express.json());
 
-
-
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -22,5 +20,5 @@ app.use((req, res) => {
 app.use(appMiddleware);
 
 app.listen(env.port, () => {
-    console.log(`APP running on http://localhsot:${env.port}`);
+    console.log(`APP running on http://localhost:${env.port}`);
 })
