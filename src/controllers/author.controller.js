@@ -40,4 +40,24 @@ export class AuthorController {
             next(new AppError(error.message, 400));
         }
     }
+
+    /**
+     * Get author by id with book informations
+     * @GET Method
+     */
+    static async getAuthor(req, res, next) {
+        try {
+            const author = 
+                await Author.findById(req.params.id).populate("books");
+
+            notFound(author, "Author");
+
+            response.success(res, 200, {
+                success: true,
+                data: author
+            });
+        } catch(error) {
+            next(new AppError(error.message, 400));
+        }
+    }
 }
