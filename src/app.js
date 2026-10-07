@@ -4,6 +4,7 @@ import { env } from "./config/env.js";
 import connectDB from "./config/db.js";
 import { appMiddleware } from "./middlewares/appMiddleware.js";
 import authorRouter from "./routes/author.routes.js";
+import categoryRouter from "./routes/category.routes.js";
 import bookRouter from "./routes/book.routes.js";
 
 const app = express();
@@ -13,6 +14,7 @@ await connectDB();
 app.use(express.json());
 
 app.use("/api/v1/authors", authorRouter);
+app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/books", bookRouter);
 
 app.use((req, res) => {
