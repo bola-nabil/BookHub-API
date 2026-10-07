@@ -23,4 +23,21 @@ export class AuthorController {
             next(new AppError(error.message, 400));
         }
     }
+
+    /**
+     * Get all authors with books details
+     * @GET Method
+     */
+    static async getAllAuthors(req, res, next) {
+        try {
+            const authors = await Author.find().populate("books");
+
+            response.success(res, 200, {
+                success: true,
+                data: authors
+            });
+        } catch(error) {
+            next(new AppError(error.message, 400));
+        }
+    }
 }
