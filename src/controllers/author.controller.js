@@ -60,4 +60,38 @@ export class AuthorController {
             next(new AppError(error.message, 400));
         }
     }
+
+    /**
+     * Update author information
+     * @PATCH Method
+     */
+    static async updateAuthor(req, res, next) {
+        try {
+            const { name, bio, nationality, birthDate, image } = req.body;
+
+            const author = await Author.findByIdAndUpdate(
+                req.params.id,
+                {
+                    name,
+                    bio,
+                    nationality,
+                    birthDate,
+                    image
+                },
+                {
+                    returnDocument: 'after',
+                    runValidators: true
+                }
+            );
+
+            notFound(author, "Author");
+
+            response.success(res, 200, {
+                success: true,
+                data: author
+            });
+        } catch(error) {
+            next(new AppError(error.message, 400));
+        }
+    }
 }

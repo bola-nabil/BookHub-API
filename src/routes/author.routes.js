@@ -6,6 +6,7 @@ const authorRouter = express.Router();
 authorRouter.post("/", AuthorController.createAuthor);
 authorRouter.get("/", AuthorController.getAllAuthors);
 authorRouter.get("/:id", AuthorController.getAuthor);
+authorRouter.patch("/:id", AuthorController.updateAuthor);
 
 
 export default authorRouter;
