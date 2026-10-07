@@ -16,9 +16,9 @@ const authorSchema = new mongoose.Schema({
         required: [true, "Author nationality is required"],
         trim: true
     },
-    brithDate: {
+    birthDate: {
         type: Date,
-        required: [true, "Author brith date is required"]
+        required: [true, "Author birth date is required"]
     },
     image: {
         type: String,
