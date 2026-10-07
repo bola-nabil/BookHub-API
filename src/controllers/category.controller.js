@@ -41,7 +41,30 @@ export class CategoryController {
                 data: category
             });
         } catch(error) {
-            next(new AppError(error.message, 400));
+            next(new AppError(error.message, error.statusCode || 400));
+        }
+    }
+
+    /**
+     * Create category
+     * @POST Method
+     */
+    static async createCategory(req, res, next) {
+        try {
+            const existCategory = await Category.findOne(req.body);
+
+            if(existCategory) {
+                throw new AppError("Sorry category exist before", 400);
+            }
+
+            const category = await Category.create(req.body);
+
+            response.success(res, 201, {
+                success: true,
+                data: category
+            });
+        } catch(error) {
+            next(new AppError(error.message, error.statusCode || 400));
         }
     }
 }
