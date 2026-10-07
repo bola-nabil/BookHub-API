@@ -14,7 +14,7 @@ export class CategoryController {
     static async getAllCategories(req, res, next) {
         try {
             const categories = 
-                await Category.find().populate("books");
+                await Category.find();
         
             response.success(res, 200, {
                 success: true,
@@ -26,10 +26,31 @@ export class CategoryController {
     }
 
     /**
-     * Get category by id with book details
+     * Get category by id
      * @GET Method
      */
     static async getCategory(req, res, next) {
+        try {
+            const category = 
+                await Category.findById(req.params.id);
+
+            notFound(category, "Category");
+
+            response.success(res, 200, {
+                success: true,
+                data: category
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
+
+
+    /**
+     * Get category by id with book details
+     * @GET Method
+     */
+    static async getCategoryWithBooks(req, res, next) {
         try {
             const category = 
                 await Category.findById(req.params.id).populate("books");
@@ -45,6 +66,7 @@ export class CategoryController {
         }
     }
 
+    
     /**
      * Create category
      * @POST Method
