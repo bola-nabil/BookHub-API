@@ -3,6 +3,7 @@ import Book from "../models/book.model.js";
 import { AppError } from "../utils/appError.js";
 import { notFound } from "../utils/notFound.js";
 import { HttpResponses } from "../utils/httpResponses.js";
+import mongoose from "mongoose";
 
 const response = new HttpResponses();
 
@@ -92,6 +93,37 @@ export class AuthorController {
             });
         } catch(error) {
             next(new AppError(error.message, 400));
+        }
+    }
+
+    /**
+     * Delete author by id and related books
+     * @DELETE Method
+     */
+    static async deleteAuthor(req, res, next) {
+        const session = await mongoose.startSession();
+        try {
+            await session.withTransaction(async () => {
+                const author = 
+                    await Author.findByIdAndDelete(req.params.id).session(session);
+
+                if(!author) {
+                    throw new AppError("Author not found", 404);
+                }
+
+                await Book.deleteMany({
+                    author: author._id
+                }).session(session);
+
+                response.success(res, 200, {
+                    success: true,
+                    message: "Author deleted successfully"
+                });
+            })
+        } catch(error) {
+            next(new AppError(error.message, 400));
+        } finally {
+            session.endSession();
         }
     }
 }
