@@ -21,7 +21,7 @@ export class CategoryController {
                 data: categories
             });
         } catch(error) {
-            next(new AppError(error.message, 400));
+           next(error);
         }
     }
 
@@ -41,7 +41,7 @@ export class CategoryController {
                 data: category
             });
         } catch(error) {
-            next(new AppError(error.message, error.statusCode || 400));
+            next(error);
         }
     }
 
@@ -64,7 +64,38 @@ export class CategoryController {
                 data: category
             });
         } catch(error) {
-            next(new AppError(error.message, error.statusCode || 400));
+            next(error);
+        }
+    }
+
+    /**
+     * Update category by id
+     * @PATCH Method
+     */
+    static async updateCategory(req, res, next) {
+        try {
+            const { name, description } = req.body;
+
+            const category = await Category.findByIdAndUpdate(
+                req.params.id,
+                {
+                    name,
+                    description
+                },
+                {
+                    returnDocument: 'after',
+                    runValidators: true
+                }
+            );
+
+            notFound(category, "Category");
+
+            response.success(res, 200, {
+                success: true,
+                data: category
+            });
+        } catch(error) {
+           next(error);
         }
     }
 }
