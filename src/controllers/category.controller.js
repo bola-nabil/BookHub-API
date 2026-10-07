@@ -24,4 +24,24 @@ export class CategoryController {
             next(new AppError(error.message, 400));
         }
     }
+
+    /**
+     * Get category by id with book details
+     * @GET Method
+     */
+    static async getCategory(req, res, next) {
+        try {
+            const category = 
+                await Category.findById(req.params.id).populate("books");
+
+            notFound(category, "Category");
+
+            response.success(res, 200, {
+                success: true,
+                data: category
+            });
+        } catch(error) {
+            next(new AppError(error.message, 400));
+        }
+    }
 }
