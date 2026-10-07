@@ -6,11 +6,8 @@ export class HttpResponses {
      * @param {*} key 
      * @param {*} value 
      */
-    success(res, statusCode = 200, key, value) {
-        res.status(statusCode).json({
-            "success": true,
-            [key]: value
-        });
+    success(res, statusCode = 200, data) {
+        res.status(statusCode).json(data);
     }
 
 
