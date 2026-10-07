@@ -98,4 +98,23 @@ export class CategoryController {
            next(error);
         }
     }
+
+    /**
+     * Delete category by id
+     * @DELETE Method
+     */
+    static async deleteCategory(req, res, next) {
+        try {
+            const category = await Category.findByIdAndDelete(req.params.id);
+
+            notFound(category, "Category");
+
+            response.success(res, 200, {
+                success: true,
+                message: "Category deleted successfully"
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
 }
