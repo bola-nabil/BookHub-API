@@ -21,7 +21,7 @@ export class AuthorController {
                 data: author
             });
         } catch(error) {
-            next(new AppError(error.message, 400));
+            next(error);
         }
     }
 
@@ -38,7 +38,7 @@ export class AuthorController {
                 data: authors
             });
         } catch(error) {
-            next(new AppError(error.message, 400));
+            next(error);
         }
     }
 
@@ -58,7 +58,7 @@ export class AuthorController {
                 data: author
             });
         } catch(error) {
-            next(new AppError(error.message, error.statusCode || 400));
+            next(error);
         }
     }
 
@@ -92,7 +92,7 @@ export class AuthorController {
                 data: author
             });
         } catch(error) {
-            next(new AppError(error.message, error.statusCode || 400));
+            next(error);
         }
     }
 
@@ -121,7 +121,7 @@ export class AuthorController {
                 });
             })
         } catch(error) {
-            next(new AppError(error.message, error.statusCode || 400));
+            next(error);
         } finally {
             session.endSession();
         }
