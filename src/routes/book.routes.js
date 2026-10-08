@@ -1,12 +1,14 @@
-import express, { Router } from "express";
+import express from "express";
 import { BookController } from "../controllers/book.controller.js";
-import { bookMiddleware } from "../middlewares/bookMiddleware.js";
+import { createBookMiddleware } from "../middlewares/books/createBookMiddleware.js";
+import { updateBookMiddleware } from "../middlewares/books/updateBookMiddleware.js";
 
 const bookRouter = express.Router();
 
 bookRouter.get("/", BookController.getAllBooks);
 bookRouter.get("/:id", BookController.getBook);
-bookRouter.post("/", bookMiddleware, BookController.createBook);
-bookRouter.patch("/:id", bookMiddleware, BookController.updateBook);
+bookRouter.post("/", createBookMiddleware, BookController.createBook);
+bookRouter.patch("/:id", updateBookMiddleware, BookController.updateBook);
+bookRouter.delete("/:id", BookController.deleteBook);
 
 export default bookRouter;
