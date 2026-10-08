@@ -1,9 +1,5 @@
-import Author from "../models/author.model.js";
-import Book from "../models/book.model.js";
-import { AppError } from "../utils/appError.js";
-import { notFound } from "../utils/notFound.js";
 import { HttpResponses } from "../utils/httpResponses.js";
-import mongoose from "mongoose";
+import { AuthorService } from "../services/author.service.js";
 
 const response = new HttpResponses();
 
@@ -14,7 +10,7 @@ export class AuthorController {
      */
     static async createAuthor(req, res, next) {
         try {
-            const author = await Author.create(req.body);
+            const author = await AuthorService.createAuthor(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -31,7 +27,7 @@ export class AuthorController {
      */
     static async getAllAuthors(req, res, next) {
         try {
-            const authors = await Author.find().populate("books");
+            const authors = await AuthorService.getAllAuthors();
 
             response.success(res, 200, {
                 success: true,
@@ -48,10 +44,7 @@ export class AuthorController {
      */
     static async getAuthor(req, res, next) {
         try {
-            const author = 
-                await Author.findById(req.params.id).populate("books");
-
-            notFound(author, "Author");
+            const author = await AuthorService.getAuthor(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -68,24 +61,11 @@ export class AuthorController {
      */
     static async updateAuthor(req, res, next) {
         try {
-            const { name, bio, nationality, birthDate, image } = req.body;
 
-            const author = await Author.findByIdAndUpdate(
+            const author = await AuthorService.updateAuthor(
                 req.params.id,
-                {
-                    name,
-                    bio,
-                    nationality,
-                    birthDate,
-                    image
-                },
-                {
-                    returnDocument: 'after',
-                    runValidators: true
-                }
+                req.body
             );
-
-            notFound(author, "Author");
 
             response.success(res, 200, {
                 success: true,
@@ -101,29 +81,15 @@ export class AuthorController {
      * @DELETE Method
      */
     static async deleteAuthor(req, res, next) {
-        const session = await mongoose.startSession();
         try {
-            await session.withTransaction(async () => {
-                const author = 
-                    await Author.findByIdAndDelete(req.params.id).session(session);
+            await AuthorService.deleteAuthor(req.params.id);
 
-                if(!author) {
-                    throw new AppError("Author not found", 404);
-                }
-
-                await Book.deleteMany({
-                    author: author._id
-                }).session(session);
-
-                response.success(res, 200, {
-                    success: true,
-                    message: "Author deleted successfully"
-                });
-            })
+            response.success(res, 200, {
+                success: true,
+                message: "Author deleted successfully"
+            });
         } catch(error) {
             next(error);
-        } finally {
-            session.endSession();
         }
     }
 }
