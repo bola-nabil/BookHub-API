@@ -7,6 +7,6 @@ const bookRouter = express.Router();
 bookRouter.get("/", BookController.getAllBooks);
 bookRouter.get("/:id", BookController.getBook);
 bookRouter.post("/", bookMiddleware, BookController.createBook);
-bookRouter.patch("/", bookMiddleware, BookController.updateBook);
+bookRouter.patch("/:id", bookMiddleware, BookController.updateBook);
 
 export default bookRouter;
