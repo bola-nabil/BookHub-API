@@ -22,7 +22,18 @@ export class BookController {
      * @GET Method
      */
     static async getBook(req, res, next) {
-        
+        try {
+            const book = await Book.findById(req.params.id);
+
+            notFound(book, "Book");
+
+            response.success(res, 200, {
+                success: true,
+                data: book
+            });
+        } catch(error) {
+            next(error);
+        }
     }
 
     /**
@@ -107,32 +118,3 @@ export class BookController {
 
     }
 }
-
-/*
-{
-    title: "Clean Code",
-
-    description: "A handbook of agile software craftsmanship.",
-
-    isbn: "9780132350884",
-
-    price: 35,
-
-    coverImage: "...",
-
-    publishedAt: "2008-08-01",
-
-    pages: 464,
-
-    language: "English",
-
-    stock: 20,
-
-    author: ObjectId,
-
-    categories: [
-        ObjectId,
-        ObjectId
-    ]
-}
-*/
