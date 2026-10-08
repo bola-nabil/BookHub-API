@@ -5,9 +5,49 @@ import Review from "../models/review.model.js";
 import { AppError } from "../utils/appError.js";
 import { notFound } from "../utils/notFound.js";
 import { HttpResponses } from "../utils/httpResponses.js";
+import { pagination } from "../utils/pagination.js";
+import { sortData } from "../utils/sortData.js";
 import mongoose from "mongoose";
 
 const response = new HttpResponses();
+
+
+const filterBooks = (req) => {
+        const filter = {};
+
+        if(req.query.search) {
+            filter.title = {
+                $regex: req.query.search,
+                $options: "i"
+            }
+        }
+
+        if(req.query.author) {
+            filter.author = req.query.author
+        }
+
+        if(req.query.category) {
+            filter.categories = req.query.category
+        }
+
+        if (req.query.minPrice || req.query.maxPrice) {
+            filter.price = {};
+
+            if (req.query.minPrice) {
+                filter.price.$gte = Number(req.query.minPrice);
+            }
+
+            if (req.query.maxPrice) {
+                filter.price.$lte = Number(req.query.maxPrice);
+            }
+        }
+
+        if(req.query.language) {
+            filter.language = req.query.language
+        }
+
+        return filter;
+}
 
 export class BookController {
     /**
@@ -15,6 +55,37 @@ export class BookController {
      * @GET Method
      */
     static async getAllBooks(req, res, next) {
+        try {
+
+            const filter = filterBooks(req);
+
+            const { page, skip, limit } = pagination(req);
+
+            const sort = sortData(req);
+
+            const [books, totalBooks] = await Promise.all([
+                await Book.find(filter)
+                .populate("author")
+                .populate("categories")
+                .skip(skip)
+                .limit(limit)
+                .sort(sort),
+                Book.countDocuments(filter)
+            ]);
+
+            const pages = Math.ceil(totalBooks / limit);
+
+            response.success(res, 200, {
+                success: true,
+                page,
+                limit,
+                total: totalBooks,
+                pages,
+                data: books
+            });
+        } catch(error) {
+            next(error);
+        }
     }
 
     /**
@@ -23,7 +94,10 @@ export class BookController {
      */
     static async getBook(req, res, next) {
         try {
-            const book = await Book.findById(req.params.id);
+            const book = 
+                await Book.findById(req.params.id)
+                .populate("author")
+                .populate("categories");
 
             notFound(book, "Book");
 
@@ -46,6 +120,7 @@ export class BookController {
                 title,
                 description,
                 isbn,
+                price,
                 coverImage,
                 publishedAt,
                 pages,
@@ -84,6 +159,7 @@ export class BookController {
                 title,
                 description,
                 isbn,
+                price,
                 coverImage,
                 publishedAt,
                 pages,
