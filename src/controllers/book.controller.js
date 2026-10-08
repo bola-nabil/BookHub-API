@@ -130,31 +130,6 @@ export class BookController {
                 categories
             } = req.body;
 
-            const existBook = await Book.findOne({
-                title: {
-                    $regex: title,
-                    $options: "i"
-                }
-            });
-
-            if(existBook) {
-                throw new AppError(`${title} book exist`, 400);
-            }
-
-            const existAuthor = await Author.findOne({
-                _id: author
-            });
-
-            notFound(existAuthor, "Author");
-
-            const categoriesExists = await Category.find({
-                _id: { $in: categories }
-            });
-
-            if(categoriesExists.length !== categories.length) {
-                throw new AppError("Category not found", 404);
-            }
-
             const book = await Book.create({
                 title,
                 description,
@@ -183,7 +158,51 @@ export class BookController {
      * @PATCH Method
      */
     static async updateBook(req, res, next) {
+        try {
+            const {
+                title,
+                description,
+                isbn,
+                price,
+                coverImage,
+                publishedAt,
+                pages,
+                language,
+                stock,
+                author,
+                categories
+            } = req.body;
 
+            const book = await Book.findByIdAndUpdate(
+                req.params.id,
+                {
+                    title,
+                    description,
+                    isbn,
+                    price,
+                    coverImage,
+                    publishedAt,
+                    pages,
+                    language,
+                    stock,
+                    author,
+                    categories
+                },
+                {
+                    returnDocument: 'after',
+                    runValidators: true
+                }
+            );
+
+            notFound(book, "Book");
+
+            response.success(res, 200, {
+                success: true,
+                data: book
+            });
+        } catch(error) {
+            next(error);
+        }
     }
 
     /**
@@ -191,6 +210,17 @@ export class BookController {
      * @DELEtE Method
      */
     static async deleteBook(req, res, next) {
+        try {
+           const book = await Book.findByIdAndDelete(req.params.id);
 
+           notFound(book, "Book");
+
+           response.success(res, 200, {
+                success: true,
+                message: "Book deleted successfully"
+           });
+        } catch(error) {
+            next(error);
+        }
     }
 }
