@@ -15,6 +15,11 @@ const bookSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    price: {
+        type: Number,
+        required: [true, "Book price is required"],
+        min: 0
+    },
     coverImage: {
         type: String,
         required: [true, "Book cover image is required"],
