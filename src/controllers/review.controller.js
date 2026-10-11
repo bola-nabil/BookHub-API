@@ -39,4 +39,24 @@ export class ReviewController {
             next(error);
         }
     }
+
+    /**
+     * Update review by id
+     * @PATCH Method
+     */
+    static async updateReview(req, res, next) {
+        try {
+            const review = await ReviewService.updateReview(
+                req.params.id,
+                req.body
+            );
+
+            response.success(res, 200, {
+                success: true,
+                data: review
+            })
+        } catch(error) {
+            next(error);
+        }
+    }
 }
