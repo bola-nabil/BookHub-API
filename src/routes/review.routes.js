@@ -4,5 +4,6 @@ import { ReviewController } from "../controllers/review.controller.js";
 const reivewRouter = express.Router();
 
 reivewRouter.post("/:bookId/reviews", ReviewController.createReview);
+reivewRouter.get("/:bookId/reviews", ReviewController.getReview);
 
 export default reivewRouter;
