@@ -1,8 +1,5 @@
-import Category from "../models/category.model.js";
-import Book from "../models/book.model.js";
-import { AppError } from "../utils/appError.js";
-import { notFound } from "../utils/notFound.js";
 import { HttpResponses } from "../utils/httpResponses.js";
+import { CategoryService } from "../services/category.service.js";
 
 const response = new HttpResponses();
 
@@ -13,8 +10,7 @@ export class CategoryController {
      */
     static async getAllCategories(req, res, next) {
         try {
-            const categories = 
-                await Category.find();
+            const categories = await CategoryService.getAllCategories();
         
             response.success(res, 200, {
                 success: true,
@@ -31,10 +27,7 @@ export class CategoryController {
      */
     static async getCategory(req, res, next) {
         try {
-            const category = 
-                await Category.findById(req.params.id);
-
-            notFound(category, "Category");
+            const category = await CategoryService.getCategory(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -52,10 +45,7 @@ export class CategoryController {
      */
     static async getCategoryWithBooks(req, res, next) {
         try {
-            const category = 
-                await Category.findById(req.params.id).populate("books");
-
-            notFound(category, "Category");
+            const category = await CategoryService.getCategoryWithBooks(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -73,13 +63,7 @@ export class CategoryController {
      */
     static async createCategory(req, res, next) {
         try {
-            const existCategory = await Category.findOne(req.body);
-
-            if(existCategory) {
-                throw new AppError("Sorry category exist before", 400);
-            }
-
-            const category = await Category.create(req.body);
+            const category = await CategoryService.createCategory(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -96,22 +80,10 @@ export class CategoryController {
      */
     static async updateCategory(req, res, next) {
         try {
-            const { name, description } = req.body;
-
-            const category = await Category.findByIdAndUpdate(
+            const category = await CategoryService.updateCategory(
                 req.params.id,
-                {
-                    name,
-                    description
-                },
-                {
-                    returnDocument: 'after',
-                    runValidators: true
-                }
+                req.body
             );
-
-            notFound(category, "Category");
-
             response.success(res, 200, {
                 success: true,
                 data: category
@@ -127,9 +99,7 @@ export class CategoryController {
      */
     static async deleteCategory(req, res, next) {
         try {
-            const category = await Category.findByIdAndDelete(req.params.id);
-
-            notFound(category, "Category");
+            await CategoryService.deleteCategory(req.params.id);
 
             response.success(res, 200, {
                 success: true,
