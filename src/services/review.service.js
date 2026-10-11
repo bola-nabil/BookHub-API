@@ -42,4 +42,14 @@ export class ReviewService {
 
         return review;
     }
+
+    static async deleteReview(id) {
+        const review = await Review.findByIdAndDelete(id);
+
+        if(review) {
+            throw new AppError("Review not found", 404);
+        }
+
+        return review;
+    } 
 }
