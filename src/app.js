@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/api/v1/authors", authorRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/books", bookRouter);
-app.use("/api/v1/books", reivewRouter);
+app.use("/api/v1", reivewRouter);
 
 app.use((req, res) => {
     res.status(404).json({
