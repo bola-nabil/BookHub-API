@@ -22,4 +22,21 @@ export class ReviewController {
             next(error);
         }
     }
+
+    /**
+     * Get Review by book id
+     * @GET Method
+     */
+    static async getReview(req, res, next) {
+        try {
+            const bookReview = await ReviewService.getReview(req.params.bookId);
+
+            response.success(res, 200, {
+                success: true,
+                data: bookReview
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
 }
