@@ -25,4 +25,21 @@ export class ReviewService {
 
         return bookReview;
     }
+
+    static async updateReview(id, data) {
+        const review = await Review.findByIdAndUpdate(
+            id,
+            data,
+            {
+                returnDocument: 'after',
+                runValidators: true
+            }
+        );
+
+        if(!review) {
+            throw new AppError("Review not found", 404);
+        }
+
+        return review;
+    }
 }
