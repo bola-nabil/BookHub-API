@@ -46,7 +46,7 @@ export class ReviewService {
     static async deleteReview(id) {
         const review = await Review.findByIdAndDelete(id);
 
-        if(review) {
+        if(!review) {
             throw new AppError("Review not found", 404);
         }
 
