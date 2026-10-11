@@ -56,6 +56,24 @@ export class AuthorController {
     }
 
     /**
+     * Get author with book information
+     * @GET Method
+     */
+
+    static async getAuthorByBooks(req, res, next) {
+        try {
+            const author = await AuthorService.getAuthorByBooks(req.params.id);
+
+            response.success(res, 200, {
+                success: true,
+                data: author
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
+
+    /**
      * Update author information
      * @PATCH Method
      */

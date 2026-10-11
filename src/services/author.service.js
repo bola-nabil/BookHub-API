@@ -22,6 +22,16 @@ export class AuthorService {
         return author;
     }
 
+    static async getAuthorByBooks(id) {
+        const author = await Author.findById(id).populate("books");
+
+        if(!author) {
+            throw new AppError("Author not found", 404);
+        }
+
+        return author;
+    }
+
     static async updateAuthor(id, data) {
         const author = await Author.findByIdAndUpdate(
             id,
