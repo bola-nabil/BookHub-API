@@ -6,6 +6,7 @@ import { appMiddleware } from "./middlewares/appMiddleware.js";
 import authorRouter from "./routes/author.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 import bookRouter from "./routes/book.routes.js";
+import reivewRouter from "./routes/review.routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/v1/authors", authorRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/books", reivewRouter);
 
 app.use((req, res) => {
     res.status(404).json({
