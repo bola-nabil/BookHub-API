@@ -1,4 +1,5 @@
 import Review from "../models/review.model.js";
+import Book from "../models/book.model.js";
 import { AppError } from "../utils/appError.js";
 
 export class ReviewService {
@@ -13,5 +14,15 @@ export class ReviewService {
         });
 
         return review;
+    }
+
+    static async getReview(bookId) {
+        const bookReview = await Book.findById(bookId).populate("reviews");
+
+        if(!bookReview) {
+            throw new AppError("Book not found", 404);
+        }
+
+        return bookReview;
     }
 }
