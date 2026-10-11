@@ -59,4 +59,21 @@ export class ReviewController {
             next(error);
         }
     }
+
+    /**
+     * Delete review by id
+     * @DELETE Method
+     */
+    static async deleteReview(req, res, next) {
+        try {
+            await ReviewService.deleteReview(req.params.id);
+
+            response.success(res, 200, {
+                success: true,
+                message: "Review deleted successfully"
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
 }
