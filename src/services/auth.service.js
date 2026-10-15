@@ -13,10 +13,6 @@ export class AuthService {
             throw new AppError("Password must be string", 400);
         }
 
-        if(role !== "user" || role !== "admin") {
-            throw new AppError("Role not vaild", 400);
-        }
-
         const existUser = await User.findOne({ email }).select("+password");
 
         if(existUser) {
