@@ -13,6 +13,18 @@ export class FavoriteService {
         return favorite;
     }
 
+    static getFavorites = async (userId) => {
+        const favorites = await Favorite.find({
+            user: userId
+        }).populate("user").populate("book", "title author coverImage");
+
+        if(favorites.length === 0) {
+            throw new AppError("No Favorites Added", 404);
+        }
+
+        return favorites;
+    }
+
     static deleteFavorite = async (userId, bookId) => {
         const favorite = await Favorite.deleteOne({
             user: userId,
