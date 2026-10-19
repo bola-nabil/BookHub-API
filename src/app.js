@@ -24,7 +24,7 @@ app.use("/api/v1/authors", authorRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1", reivewRouter);
-app.use("/api/v1/books", favoriteRoute);
+app.use("/api/v1/", favoriteRoute);
 
 
 app.use((req, res) => {
