@@ -7,6 +7,7 @@ import authorRouter from "./routes/author.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 import bookRouter from "./routes/book.routes.js";
 import reivewRouter from "./routes/review.routes.js";
+import favoriteRoute from "./routes/favorite.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import { authMiddleware } from "./middlewares/authMiddleWare.js";
 
@@ -23,6 +24,8 @@ app.use("/api/v1/authors", authorRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1", reivewRouter);
+app.use("/api/v1/books", favoriteRoute);
+
 
 app.use((req, res) => {
     res.status(404).json({
