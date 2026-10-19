@@ -17,6 +17,19 @@ export class FavoriteController {
         }
     }
 
+    static getFavorites = async (req, res, next) => {
+        try {
+            const favorites = await FavoriteService.getFavorites(req.user.id);
+
+            response.success(res, 200, {
+                success: true,
+                data: favorites
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
+
     static deleteFavorite = async (req, res, next) => {
         try {
             await FavoriteService.deleteFavorite(
