@@ -16,4 +16,20 @@ export class FavoriteController {
             next(error);
         }
     }
+
+    static deleteFavorite = async (req, res, next) => {
+        try {
+            await FavoriteService.deleteFavorite(
+                req.user.id,
+                req.params.bookId
+            );
+
+            response.success(res, 200, {
+                success: true,
+                message: "Favorite deleted successfully"
+            });
+        } catch(error) {
+            next(error);
+        }
+    }
 }
