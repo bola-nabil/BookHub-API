@@ -10,7 +10,7 @@ export class ReviewController {
      */
     static async createReview(req, res, next) {
         try {
-            const review = await ReviewService.createReview(
+            const review = await ReviewService.create(
                 req.body, req.user.id, req.params.bookId
             );
 
@@ -29,7 +29,7 @@ export class ReviewController {
      */
     static async getReview(req, res, next) {
         try {
-            const bookReview = await ReviewService.getReview(req.params.bookId);
+            const bookReview = await ReviewService.getByID(req.params.bookId);
 
             response.success(res, 200, {
                 success: true,
@@ -46,7 +46,7 @@ export class ReviewController {
      */
     static async updateReview(req, res, next) {
         try {
-            const review = await ReviewService.updateReview(
+            const review = await ReviewService.update(
                 req.params.id,
                 req.body
             );
@@ -66,7 +66,7 @@ export class ReviewController {
      */
     static async deleteReview(req, res, next) {
         try {
-            await ReviewService.deleteReview(req.params.id);
+            await ReviewService.delete(req.params.id);
 
             response.success(res, 200, {
                 success: true,
