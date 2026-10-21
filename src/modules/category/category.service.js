@@ -1,13 +1,13 @@
 import Category from "./category.model.js";
-import Book from "../models/book.model.js";
+import Book from "../book/book.model.js";
 import { AppError } from "../../utils/appError.js";
 
 export class CategoryService {
-    static async getAllCategories() {
+    static async getAll() {
         return await Category.find();
     }
 
-    static async getCategory(id) {
+    static async getById(id) {
         const category = await Category.findById(id);
 
         if(!category) {
@@ -17,7 +17,7 @@ export class CategoryService {
         return category;
     }
 
-    static async getCategoryWithBooks(id) {
+    static async getByBooks(id) {
         const category = await Category.findById(id)
                                         .populate("books");
         if(!category) {
@@ -27,7 +27,7 @@ export class CategoryService {
         return category;
     }
 
-    static async createCategory(data) {
+    static async create(data) {
         const existCategory = await Category.findOne(data);
 
         if(existCategory) {
@@ -39,7 +39,7 @@ export class CategoryService {
         return category;
     }
 
-    static async updateCategory(id, data) {
+    static async update(id, data) {
         const category = await Category.findByIdAndUpdate(
             id,
             data,
@@ -56,7 +56,7 @@ export class CategoryService {
         return category;
     }
 
-    static async deleteCategory(id) {
+    static async delete(id) {
         const category = await Category.findByIdAndDelete(id);
 
         if(!category) {
