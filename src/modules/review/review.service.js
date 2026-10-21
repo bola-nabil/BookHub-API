@@ -1,9 +1,9 @@
-import Review from "../models/review.model.js";
-import Book from "../models/book.model.js";
+import Review from "./review.model.js";
+import Book from "../book/book.model.js";
 import { AppError } from "../../utils/appError.js";
 
 export class ReviewService {
-    static async createReview(data, userId, bookId) {
+    static async create(data, userId, bookId) {
         const { rating, comment } = data;
 
         const review = await Review.create({
@@ -16,7 +16,7 @@ export class ReviewService {
         return review;
     }
 
-    static async getReview(bookId) {
+    static async getByID(bookId) {
         const bookReview = await Book.findById(bookId).populate("reviews");
 
         if(!bookReview) {
@@ -26,7 +26,7 @@ export class ReviewService {
         return bookReview;
     }
 
-    static async updateReview(id, data) {
+    static async update(id, data) {
         const review = await Review.findByIdAndUpdate(
             id,
             data,
@@ -43,7 +43,7 @@ export class ReviewService {
         return review;
     }
 
-    static async deleteReview(id) {
+    static async delete(id) {
         const review = await Review.findByIdAndDelete(id);
 
         if(!review) {
