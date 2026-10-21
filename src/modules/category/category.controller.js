@@ -10,7 +10,7 @@ export class CategoryController {
      */
     static async getAllCategories(req, res, next) {
         try {
-            const categories = await CategoryService.getAllCategories();
+            const categories = await CategoryService.getAll();
         
             response.success(res, 200, {
                 success: true,
@@ -27,7 +27,7 @@ export class CategoryController {
      */
     static async getCategory(req, res, next) {
         try {
-            const category = await CategoryService.getCategory(req.params.id);
+            const category = await CategoryService.getById(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -45,7 +45,7 @@ export class CategoryController {
      */
     static async getCategoryWithBooks(req, res, next) {
         try {
-            const category = await CategoryService.getCategoryWithBooks(req.params.id);
+            const category = await CategoryService.getByBooks(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -63,7 +63,7 @@ export class CategoryController {
      */
     static async createCategory(req, res, next) {
         try {
-            const category = await CategoryService.createCategory(req.body);
+            const category = await CategoryService.create(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -80,7 +80,7 @@ export class CategoryController {
      */
     static async updateCategory(req, res, next) {
         try {
-            const category = await CategoryService.updateCategory(
+            const category = await CategoryService.update(
                 req.params.id,
                 req.body
             );
@@ -99,7 +99,7 @@ export class CategoryController {
      */
     static async deleteCategory(req, res, next) {
         try {
-            await CategoryService.deleteCategory(req.params.id);
+            await CategoryService.delete(req.params.id);
 
             response.success(res, 200, {
                 success: true,
