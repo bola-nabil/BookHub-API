@@ -1,5 +1,5 @@
-import Favorite from "../models/favorite.model.js";
-import { AppError } from "../utils/appError.js";
+import Favorite from "./favorite.model.js";
+import { AppError } from "../../utils/appError.js";
 
 export class FavoriteService {
     static createFavorite = async (data, user) => {
