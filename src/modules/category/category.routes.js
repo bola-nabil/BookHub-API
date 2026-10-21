@@ -1,8 +1,11 @@
 import express from "express";
 import { CategoryController } from "./category.controller.js";
+import { authMiddleware } from "../../middlewares/authMiddleware.js";
 import { authorize } from "../../middlewares/authorize.js";
 
 const categoryRouter = express.Router();
+
+categoryRouter.use(authMiddleware);
 
 categoryRouter.get("/", CategoryController.getAllCategories);
 categoryRouter.get("/:id", CategoryController.getCategory);
