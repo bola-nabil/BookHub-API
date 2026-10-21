@@ -1,12 +1,12 @@
 import { HttpResponses } from "../../utils/httpResponses.js";
-import { FavoriteService } from "../services/favorite.service.js";
+import { FavoriteService } from "./favorite.service.js";
 
 const response = new HttpResponses();
 
 export class FavoriteController {
     static createFavorite = async (req, res, next) => {
         try {
-            const favorite = await FavoriteService.createFavorite(req.params.bookId, req.user.id);
+            const favorite = await FavoriteService.create(req.params.bookId, req.user.id);
 
             response.success(res, 201, {
                 success: true,
@@ -19,7 +19,7 @@ export class FavoriteController {
 
     static getFavorites = async (req, res, next) => {
         try {
-            const favorites = await FavoriteService.getFavorites(req.user.id);
+            const favorites = await FavoriteService.getByID(req.user.id);
 
             response.success(res, 200, {
                 success: true,
@@ -32,7 +32,7 @@ export class FavoriteController {
 
     static deleteFavorite = async (req, res, next) => {
         try {
-            await FavoriteService.deleteFavorite(
+            await FavoriteService.delete(
                 req.user.id,
                 req.params.bookId
             );
