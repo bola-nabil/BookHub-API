@@ -1,13 +1,11 @@
-import Book from "../models/book.model.js";
+import Book from "./book.model.js";
 import Category from "../category/category.model.js";
 import Author from "../author/author.model.js";
 import Review from "../review/review.model.js";
-import { AppError } from "../../utils/appError.js";
-import { notFound } from "../../utils/notFound.js";
 import { HttpResponses } from "../../utils/httpResponses.js";
 import { pagination } from "../../utils/pagination.js";
 import { sortData } from "../../utils/sortData.js";
-import mongoose from "mongoose";
+import { BookService } from "./book.service.js";
 
 const response = new HttpResponses();
 
@@ -92,14 +90,9 @@ export class BookController {
      * Get one book by id
      * @GET Method
      */
-    static async getBook(req, res, next) {
+    static async getBookById(req, res, next) {
         try {
-            const book = 
-                await Book.findById(req.params.id)
-                .populate("author")
-                .populate("categories");
-
-            notFound(book, "Book");
+            const book = await BookService.getById(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -116,33 +109,7 @@ export class BookController {
      */
     static async createBook(req, res, next) {
         try {
-            const {
-                title,
-                description,
-                isbn,
-                price,
-                coverImage,
-                publishedAt,
-                pages,
-                language,
-                stock,
-                author,
-                categories
-            } = req.body;
-
-            const book = await Book.create({
-                title,
-                description,
-                isbn,
-                price,
-                coverImage,
-                publishedAt,
-                pages,
-                language,
-                stock,
-                author,
-                categories
-            });
+            const book = BookService.create(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -159,42 +126,7 @@ export class BookController {
      */
     static async updateBook(req, res, next) {
         try {
-            const {
-                title,
-                description,
-                isbn,
-                price,
-                coverImage,
-                publishedAt,
-                pages,
-                language,
-                stock,
-                author,
-                categories
-            } = req.body;
-
-            const book = await Book.findByIdAndUpdate(
-                req.params.id,
-                {
-                    title,
-                    description,
-                    isbn,
-                    price,
-                    coverImage,
-                    publishedAt,
-                    pages,
-                    language,
-                    stock,
-                    author,
-                    categories
-                },
-                {
-                    returnDocument: 'after',
-                    runValidators: true
-                }
-            );
-
-            notFound(book, "Book");
+            const book = BookService.update(req.params.id, req.body);
 
             response.success(res, 200, {
                 success: true,
@@ -211,9 +143,7 @@ export class BookController {
      */
     static async deleteBook(req, res, next) {
         try {
-           const book = await Book.findByIdAndDelete(req.params.id);
-
-           notFound(book, "Book");
+           await BookService.delete(req.params.id);
 
            response.success(res, 200, {
                 success: true,

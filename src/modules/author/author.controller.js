@@ -10,7 +10,7 @@ export class AuthorController {
      */
     static async createAuthor(req, res, next) {
         try {
-            const author = await AuthorService.createAuthor(req.body);
+            const author = await AuthorService.create(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -27,7 +27,7 @@ export class AuthorController {
      */
     static async getAllAuthors(req, res, next) {
         try {
-            const authors = await AuthorService.getAllAuthors();
+            const authors = await AuthorService.getAll();
 
             response.success(res, 200, {
                 success: true,
@@ -44,7 +44,7 @@ export class AuthorController {
      */
     static async getAuthor(req, res, next) {
         try {
-            const author = await AuthorService.getAuthor(req.params.id);
+            const author = await AuthorService.getByID(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -62,7 +62,7 @@ export class AuthorController {
 
     static async getAuthorByBooks(req, res, next) {
         try {
-            const author = await AuthorService.getAuthorByBooks(req.params.id);
+            const author = await AuthorService.getByBooks(req.params.id);
 
             response.success(res, 200, {
                 success: true,
@@ -80,7 +80,7 @@ export class AuthorController {
     static async updateAuthor(req, res, next) {
         try {
 
-            const author = await AuthorService.updateAuthor(
+            const author = await AuthorService.update(
                 req.params.id,
                 req.body
             );
@@ -100,7 +100,7 @@ export class AuthorController {
      */
     static async deleteAuthor(req, res, next) {
         try {
-            await AuthorService.deleteAuthor(req.params.id);
+            await AuthorService.delete(req.params.id);
 
             response.success(res, 200, {
                 success: true,
