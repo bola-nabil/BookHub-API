@@ -1,8 +1,11 @@
 import express from "express";
 import { AuthorController } from "./author.controller.js";
+import { authMiddleware } from "../../middlewares/authMiddleware.js";
 import { authorize } from "../../middlewares/authorize.js";
 
 const authorRouter = express.Router();
+
+authorRouter.use(authMiddleware);
 
 authorRouter.post("/", authorize("admin"), AuthorController.createAuthor);
 authorRouter.get("/", AuthorController.getAllAuthors);
