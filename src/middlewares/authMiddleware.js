@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
+import { AppError } from "../utils/appError.js";
 
 export const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -21,10 +22,8 @@ export const authMiddleware = (req, res, next) => {
             role: decode.role
         }
 
-        next();
+        return next();
     } catch {
-        return res.status(401).json({
-        message: "Invalid or expired token"
-      });
+       return next(new AppError("Invalid or expired token", 401));
     }
 }
