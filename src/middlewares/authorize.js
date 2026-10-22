@@ -6,8 +6,6 @@ export const authorize = (...roles) => {
             throw new AppError("Authentication required", 401);
         }
 
-        console.log(req.user);
-
         if(!roles.includes(req.user.role)) {
             throw new AppError("You do not have permission", 403);
         }
