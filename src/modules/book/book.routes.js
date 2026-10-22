@@ -1,15 +1,17 @@
 import express from "express";
-import { BookController } from "../controllers/book.controller.js";
-import { createBookMiddleware } from "../../middlewares/books/createBookMiddleware.js";
-import { updateBookMiddleware } from "../../middlewares/books/updateBookMiddleware.js";
+import { BookController } from "./book.controller.js";
+import { createBookValidation, updateBookValidation } from "./book.validation.js";
+import { authMiddleware } from "../../middlewares/authMiddleware.js";
 import { authorize } from "../../middlewares/authorize.js";
 
 const bookRouter = express.Router();
 
+bookRouter.use(authMiddleware);
+
 bookRouter.get("/", BookController.getAllBooks);
-bookRouter.get("/:id", BookController.getBook);
-bookRouter.post("/", authorize("admin"), createBookMiddleware, BookController.createBook);
-bookRouter.patch("/:id", authorize("admin"), updateBookMiddleware, BookController.updateBook);
+bookRouter.get("/:id", BookController.getBookById);
+bookRouter.post("/", authorize("admin"), createBookValidation, BookController.createBook);
+bookRouter.patch("/:id", authorize("admin"), updateBookValidation , BookController.updateBook);
 bookRouter.delete("/:id", authorize("admin"), BookController.deleteBook);
 
 export default bookRouter;
