@@ -1,18 +1,18 @@
 import Author from "./author.model.js";
-import Book from "../models/book.model.js";
+import Book from "../book/book.model.js";
 import { AppError } from "../../utils/appError.js";
 import mongoose from "mongoose";
 
 export class AuthorService {
-    static async createAuthor(data) {
+    static async create(data) {
         return await Author.create(data);
     }
 
-    static async getAllAuthors() {
+    static async getAll() {
         return await Author.find().populate("books");
     }
 
-    static async getAuthor(id) {
+    static async getByID(id) {
         const author = await Author.findById(id).populate("books");
 
         if(!author) {
@@ -22,7 +22,7 @@ export class AuthorService {
         return author;
     }
 
-    static async getAuthorByBooks(id) {
+    static async getByBooks(id) {
         const author = await Author.findById(id).populate("books");
 
         if(!author) {
@@ -32,7 +32,7 @@ export class AuthorService {
         return author;
     }
 
-    static async updateAuthor(id, data) {
+    static async update(id, data) {
         const author = await Author.findByIdAndUpdate(
             id,
             data,
@@ -49,7 +49,7 @@ export class AuthorService {
         return author;
     }
 
-    static async deleteAuthor(id) {
+    static async delete(id) {
         const session = await mongoose.startSession();
         try {
             let deletedAuthor;
