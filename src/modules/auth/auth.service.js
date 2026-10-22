@@ -33,6 +33,12 @@ export class AuthService {
             throw new AppError("Email or password not vaild", 401);
         }
 
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if(!isPasswordCorrect) {
+            return next(new AppError("Email or password not vaild", 401));
+        }
+
         return user;
     }
 }

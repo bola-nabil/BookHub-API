@@ -109,7 +109,7 @@ export class BookController {
      */
     static async createBook(req, res, next) {
         try {
-            const book = BookService.create(req.body);
+            const book = await BookService.create(req.body);
 
             response.success(res, 201, {
                 success: true,
@@ -126,7 +126,7 @@ export class BookController {
      */
     static async updateBook(req, res, next) {
         try {
-            const book = BookService.update(req.params.id, req.body);
+            const book = await BookService.update(req.params.id, req.body);
 
             response.success(res, 200, {
                 success: true,

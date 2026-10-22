@@ -6,7 +6,7 @@ export const authorizeOwnerOrAdmin = (req, res, next) => {
     const isAdmin = req.user.role === "admin";
 
     if(!isOwner || isAdmin) {
-        throw new AppError("Forbidden", 403);
+        return next(new AppError("Forbidden", 403));
     }
 
     next();

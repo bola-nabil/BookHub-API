@@ -1,6 +1,7 @@
 import { AppError } from "../../utils/appError.js"
 import Book from "./book.model.js";
 import Author from "../author/author.model.js";
+import Category from "../category/category.model.js";
 
 export const createBookValidation = async (req, res, next) => {
     const { title, author, categories } = req.body;
